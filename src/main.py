@@ -4,7 +4,8 @@ from fitness.fitness_calculations import calculate_fitness
 image = resize_image(0.1, 'duck.jpg')
 save_image(image, 'smaller_duck')
 
-i1 = read_image('duck.jpg')
+i1 = read_image('hen_slight_change.jpg')
 i2 = read_image('hen.jpg')
+
 fitness = calculate_fitness(i1, i2)
 print(fitness)
