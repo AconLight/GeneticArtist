@@ -44,6 +44,8 @@ class ImageModel:
 
         self.points_by_layer = [self.first_layer, self.second_layer]
 
+        self.triangles = {d1: [0, 1, 2], d2: [0, 1, 2]}
+
     def find_points(self, probabilty_func):
         result = []
         for idx in range(1, len(self.points_by_layer)):
@@ -65,6 +67,11 @@ class ImageModel:
             self.points_by_layer[point_leaf.layer + 1].append(point2)
             self.points_by_layer[point_leaf.layer + 1].append(point3)
 
+        del self.triangles[point_leaf]
+        self.triangles[point1] = [0, 1, 2]
+        self.triangles[point2] = [0, 1, 2]
+        self.triangles[point3] = [0, 1, 2]
+
     def mutate_one(self, point):
         point.radius_percentage = self.mutation_range_function(0, 1, 1, point.radius_percentage)
         point.alfa = self.mutation_range_function(-99999999, 99999999, np.pi*2,  point.alfa)
@@ -83,7 +90,31 @@ class ImageModel:
         for point in points_to_cross:
             self.add_three_points(point)
 
-
+    def get_triangles(self):
+        result = []
+        for point in self.triangles:
+            my_map1 = {'points': [(point.x, point.y)], 'colors': [(point.R, point.R, point.G), (), ()]}
+            my_map2 = {'points': [(point.x, point.y)], 'colors': [(point.R, point.R, point.G), (), ()]}
+            my_map3 = {'points': [(point.x, point.y)], 'colors': [(point.R, point.R, point.G), (), ()]}
+            parent_idx = 0
+            my_map1['points'].append((point.parents[parent_idx].x, point.parents[parent_idx].y))
+            my_map1['points'].append((point.parents[(parent_idx + 1)%3].x, point.parents[(parent_idx + 1)%3].y))
+            my_map1['colors'].append((point.parents[parent_idx].R, point.parents[parent_idx].G, point.parents[parent_idx].B))
+            my_map1['colors'].append((point.parents[(parent_idx + 1)%3].R, point.parents[(parent_idx + 1)%3].G, point.parents[(parent_idx + 1)%3].B))
+            parent_idx = 1
+            my_map2['points'].append((point.parents[parent_idx].x, point.parents[parent_idx].y))
+            my_map2['points'].append((point.parents[(parent_idx + 1)%3].x, point.parents[(parent_idx + 1)%3].y))
+            my_map2['colors'].append((point.parents[parent_idx].R, point.parents[parent_idx].G, point.parents[parent_idx].B))
+            my_map2['colors'].append((point.parents[(parent_idx + 1)%3].R, point.parents[(parent_idx + 1)%3].G, point.parents[(parent_idx + 1)%3].B))
+            parent_idx = 2
+            my_map3['points'].append((point.parents[parent_idx].x, point.parents[parent_idx].y))
+            my_map3['points'].append((point.parents[(parent_idx + 1)%3].x, point.parents[(parent_idx + 1)%3].y))
+            my_map3['colors'].append((point.parents[parent_idx].R, point.parents[parent_idx].G, point.parents[parent_idx].B))
+            my_map3['colors'].append((point.parents[(parent_idx + 1)%3].R, point.parents[(parent_idx + 1)%3].G, point.parents[(parent_idx + 1)%3].B))
+            result.append(my_map1)
+            result.append(my_map2)
+            result.append(my_map3)
+        return result
 
 
 

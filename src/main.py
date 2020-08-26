@@ -17,10 +17,15 @@ print(fitness)
 
 image_model = ImageModel(example_mutation_prob_func, example_cross_prob_func, example_mutation_func)
 
+t = image_model.get_triangles()
+print(str(len(t)))
+print(str(t))
+
 for i in range(5):
     image_model.mutate_model()
     image_model.cross_model()
 
+print(str(image_model.get_triangles()))
 
 generate_scaled_images(i1)
 
