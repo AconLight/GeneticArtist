@@ -5,27 +5,23 @@ from genetics.cross_prob import example_cross_prob_func
 from genetics.mutation_prob import example_mutation_prob_func
 from genetics.mutations import example_mutation_func
 from image_processing.resizing import generate_scaled_images, resize_image
+from image_processing.triangles_to_image import convert_triangles_to_image
 
 image = resize_image(0.1, 'duck.jpg')
 save_image(image, 'smaller_duck')
 
 i1 = read_image('hen_slight_change.jpg')
-i2 = read_image('hen.jpg')
-
-fitness = calculate_fitness(i1, i2)
-print(fitness)
 
 image_model = ImageModel(example_mutation_prob_func, example_cross_prob_func, example_mutation_func)
 
 t = image_model.get_triangles()
-print(str(len(t)))
 print(str(t))
+# for i in range(5):
+#     image_model.mutate_model()
+#     image_model.cross_model()
 
-for i in range(5):
-    image_model.mutate_model()
-    image_model.cross_model()
+i2 = generate_scaled_images(convert_triangles_to_image(t, (1024, 684)))[0]
 
-print(str(image_model.get_triangles()))
-
-generate_scaled_images(i1)
+fitness = calculate_fitness(i1, i2)
+print(fitness)
 
