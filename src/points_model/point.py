@@ -21,8 +21,10 @@ class Point:
         self.x = 0
         self.y = 0
         self.R = random.randint(0, 255)
-        self.G = random.randint(0, 255)
-        self.B = random.randint(0, 255)
+        self.G = self.R
+        self.B = self.R
+        # self.G = random.randint(0, 255)
+        # self.B = random.randint(0, 255)
         self.recalculate_me()
 
     def set_rgb(self, R, G, B):

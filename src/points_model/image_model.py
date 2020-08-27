@@ -1,6 +1,6 @@
 from points_model.point import Point
 import numpy as np
-
+import random
 
 class ImageModel:
 
@@ -25,26 +25,40 @@ class ImageModel:
         c3.set_xyrgb(1, 1, self.init_R, self.init_G, self.init_B)
         c4 = Point([], None, 0, 0)
         c4.set_xyrgb(0, 1, self.init_R, self.init_G, self.init_B)
+        c5 = Point([c1, c2, c3], c3, 0, 0)
+        c5.set_xyrgb(0.5, 0.5, self.init_R, self.init_G, self.init_B)
+        c5.layer = 0
 
         # definition of first descendants
-        d1 = Point([c1, c2, c3], c2, 0, 0)
-        d2 = Point([c1, c4, c3], c4, 0, 0)
+        d1 = Point([c1, c2, c5], c2, 0, 0)
+        d2 = Point([c1, c4, c5], c4, 0, 0)
         d1.recalculate_me()
         d1.set_rgb(self.init_R, self.init_G, self.init_B)
         d2.recalculate_me()
         d2.set_rgb(self.init_R, self.init_G, self.init_B)
+
+        d3 = Point([c3, c2, c5], c2, 0, 0)
+        d4 = Point([c3, c4, c5], c4, 0, 0)
+        d3.recalculate_me()
+        d3.set_rgb(self.init_R, self.init_G, self.init_B)
+        d4.recalculate_me()
+        d4.set_rgb(self.init_R, self.init_G, self.init_B)
+
+        self.c5 = c5
 
         self.first_layer = [
             c1, c2, c3, c4
         ]
 
         self.second_layer = [
-            d1, d2
+            d1, d2, d3, d4, c5
         ]
 
         self.points_by_layer = [self.first_layer, self.second_layer]
 
-        self.triangles = {d1: [0, 1, 2], d2: [0, 1, 2]}
+        self.points_size = 8
+
+        self.triangles = {d1: [0, 1, 2], d2: [0, 1, 2], d3: [0, 1, 2], d4: [0, 1, 2]}
 
     def find_points(self, probabilty_func):
         result = []
@@ -52,11 +66,11 @@ class ImageModel:
             for idx2 in range(len(self.points_by_layer[idx])):
                 if probabilty_func(self.points_by_layer[idx][idx2]):
                     result.append(self.points_by_layer[idx][idx2])
-                if len(result) > 10:
-                    return result
+        result = random.sample(result, min(len(result), int(self.points_size/10)+5))
         return result
 
     def add_three_points(self, point_leaf):
+        self.points_size += 3
         point1 = Point([point_leaf, point_leaf.parents[1], point_leaf.parents[2]], point_leaf, 0, 0)
         point2 = Point([point_leaf.parents[0], point_leaf, point_leaf.parents[2]], point_leaf, 0, 0)
         point3 = Point([point_leaf.parents[0], point_leaf.parents[1], point_leaf], point_leaf, 0, 0)
@@ -75,11 +89,19 @@ class ImageModel:
         self.triangles[point3] = [0, 1, 2]
 
     def mutate_one(self, point):
-        point.radius_percentage = self.mutation_range_function(0, 1, 1, point.radius_percentage)*0.7
-        point.alfa = self.mutation_range_function(-99999999, 99999999, np.pi*2,  point.alfa)
-        point.R = int(self.mutation_range_function(0, self.color_range, self.color_range, point.R))
-        point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))
-        point.B = int(self.mutation_range_function(0, self.color_range, self.color_range, point.B))
+        if random.randint(0, 1) == 0:
+            point.radius_percentage = self.mutation_range_function(0, 1, 1, point.radius_percentage)*0.5
+            point.alfa = self.mutation_range_function(-99999999, 99999999, np.pi*2*2,  point.alfa)
+        else:
+            point.R = int(self.mutation_range_function(0, self.color_range, self.color_range, point.R))
+            point.G = point.R
+            point.B = point.R
+        # point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))
+        # point.B = int(self.mutation_range_function(0, self.color_range, self.color_range, point.B))
+        if point == self.c5:
+            point.radius_percentage = 1
+            point.alfa = np.pi*0.75
+
         point.recalculate_me_and_descendants()
 
     def mutate_model(self):

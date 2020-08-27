@@ -10,6 +10,6 @@ def calculate_fitness(original_image, generated_image):
     average_brightness = stats.mean[0]
     # Calculate fitness value
     fitness = (255 - average_brightness) / 255
-    fitness = fitness ** 2
+    # fitness = fitness ** 2
     # Use squaring to emphasise small changes when images are very similar
     return fitness
