@@ -8,20 +8,22 @@ from image_processing.resizing import generate_scaled_images, resize_image
 from image_processing.triangles_to_image import convert_triangles_to_image
 
 image = resize_image(0.1, 'duck.jpg')
-save_image(image, 'smaller_duck')
+save_image(image, 'smaller_duck', file_extention='jpg')
 
 i1 = read_image('hen_slight_change.jpg')
 
 image_model = ImageModel(example_mutation_prob_func, example_cross_prob_func, example_mutation_func)
 
+for i in range(10):
+    image_model.cross_model()
+    image_model.mutate_model()
+
 t = image_model.get_triangles()
 print(str(t))
-# for i in range(5):
-#     image_model.mutate_model()
-#     image_model.cross_model()
 
-i2 = generate_scaled_images(convert_triangles_to_image(t, (1024, 684)))[0]
+i2 = convert_triangles_to_image(t, (1024, 684))
 
 fitness = calculate_fitness(i1, i2)
 print(fitness)
 
+save_image(i2, 'siema')

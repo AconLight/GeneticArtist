@@ -73,7 +73,7 @@ class ImageModel:
         self.triangles[point3] = [0, 1, 2]
 
     def mutate_one(self, point):
-        point.radius_percentage = self.mutation_range_function(0, 1, 1, point.radius_percentage)
+        point.radius_percentage = self.mutation_range_function(0, 1, 1, point.radius_percentage)*0.7
         point.alfa = self.mutation_range_function(-99999999, 99999999, np.pi*2,  point.alfa)
         point.R = int(self.mutation_range_function(0, self.color_range, self.color_range, point.R))
         point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))

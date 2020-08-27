@@ -12,3 +12,5 @@ def read_image(image_name):
 
 def save_image(image, name, file_extention='png'):
     image.save('{}/{}.{}'.format(dir_path, name, file_extention))
+    print(dir_path)
+    print(name)

@@ -51,8 +51,8 @@ class Point:
         max_radius = np.min(radiuses)/2
 
         # calculating new x, y
-        self.x = (self.parents[0].x + self.parents[1].x + self.parents[2].x) / 3 + max_radius*np.cos(self.alfa)
-        self.y = (self.parents[0].y + self.parents[1].y + self.parents[2].y) / 3 + max_radius*np.sin(self.alfa)
+        self.x = (self.parents[0].x + self.parents[1].x + self.parents[2].x) / 3 + self.radius_percentage*max_radius*np.cos(self.alfa)
+        self.y = (self.parents[0].y + self.parents[1].y + self.parents[2].y) / 3 + self.radius_percentage*max_radius*np.sin(self.alfa)
 
     def recalculate_me_and_descendants(self):
         self.recalculate_me()
