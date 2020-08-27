@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 
 class Point:
 
@@ -20,9 +20,9 @@ class Point:
         self.alfa = alfa    # the angle of the radius of the displacement
         self.x = 0
         self.y = 0
-        self.R = 0
-        self.G = 0
-        self.B = 0
+        self.R = random.randint(0, 255)
+        self.G = random.randint(0, 255)
+        self.B = random.randint(0, 255)
         self.recalculate_me()
 
     def set_rgb(self, R, G, B):

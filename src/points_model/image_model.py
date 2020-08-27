@@ -52,6 +52,8 @@ class ImageModel:
             for idx2 in range(len(self.points_by_layer[idx])):
                 if probabilty_func(self.points_by_layer[idx][idx2]):
                     result.append(self.points_by_layer[idx][idx2])
+                if len(result) > 10:
+                    return result
         return result
 
     def add_three_points(self, point_leaf):
