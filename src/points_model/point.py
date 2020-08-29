@@ -15,7 +15,7 @@ class Point:
                 f.children.append(self)
         else:
             self.layer = 0
-            self.R = random.randint(0, 255)
+            self.R = 255 #random.randint(0, 255)
             self.G = self.R
             self.B = self.R
             # self.G = random.randint(0, 255)

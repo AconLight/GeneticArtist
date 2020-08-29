@@ -41,6 +41,7 @@ class ImageModel:
         for point in self.points:
             if probabilty_func(point):
                 result.append(point)
+        result = [random.choice(result)]
         return result
 
     def find_triangles(self, probabilty_func):
@@ -60,18 +61,22 @@ class ImageModel:
             self.points.append(p)
 
     def mutate_one(self, point):
-        if random.randint(0, 1) == 0:
+        mode = random.randint(0, 4)
+        point.mutations_numb += 1
+        factor = 0.2
+        avg_fac = 0
+        if mode == 0:
             point.radius_percentage = self.mutation_range_function(0.4, 0.6, 0.1, point.radius_percentage)
         else:
-            point.mutations_numb += 1
-            factor = 0.5 / point.mutations_numb
-            avg_fac = 4
             if len(point.fathers) != 0:
-                point.R = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
+                if mode == 1:
+                    point.R = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
                                                            (point.R + point.fathers[0].R*avg_fac + point.fathers[1].R*avg_fac) / (2*avg_fac+1)))
-                point.G = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
+                if mode == 2:
+                    point.G = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
                                                            (point.G + point.fathers[0].G*avg_fac + point.fathers[1].G*avg_fac) / (2*avg_fac+1)))
-                point.B = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
+                if mode == 3:
+                    point.B = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
                                                            (point.B + point.fathers[0].B*avg_fac + point.fathers[1].B*avg_fac) / (2*avg_fac+1)))
                 # point.G = point.R
                 # point.B = point.R

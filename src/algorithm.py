@@ -11,7 +11,7 @@ import copy
 
 def do_algorithm(image_name, scale_step, img_number, fitness_goal):
     img = read_image(image_name + '.jpg')
-    scale = 1200 / img.width
+    scale = 600 / img.width
 
     first_image_to_compare = resize_image(img, scale)
     save_image(first_image_to_compare, 'temp1', file_extention='jpg')
@@ -39,7 +39,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
             print('fitness: ' + str(fitness))
             print('fitness goal: ' + str(fitness_goal))
         if fitness > 0.5 + fitness_goal * images_to_compare_idx / (
-                img_number - 1) / 2 or i - last_i > 4500 / img_number:
+                img_number - 1) / 2 or i - last_i > 2000*(images_to_compare_idx+1) / img_number:
             last_i = i
             images_to_compare_idx = images_to_compare_idx + 1
             t = image_model.get_triangles()
@@ -60,7 +60,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
                                                             img_number - 1 - images_to_compare_idx))), int(height / (
                                                             (1 / scale_step) ** (
                                                                 img_number - 1 - images_to_compare_idx)))))
-
+            print()
             fitness = calculate_fitness(images_to_compare[images_to_compare_idx], new_i2)
             continue
 
@@ -82,4 +82,4 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
         i = i + 1
 
 
-do_algorithm('circle', 0.35, 6, 0.98)
+do_algorithm('circle', 0.7, 6, 0.98)

@@ -4,6 +4,10 @@ from PIL import ImageStat
 
 def calculate_fitness(original_image, generated_image):
     # Calculate difference between two images
+
+    if original_image.width != generated_image.width:
+        print('dupa')
+
     difference = ImageChops.difference(original_image, generated_image)
 
     # res = 0
@@ -13,10 +17,10 @@ def calculate_fitness(original_image, generated_image):
     #         val += difference.getpixel((x, y))[0]
     #         val += difference.getpixel((x, y))[1]
     #         val += difference.getpixel((x, y))[2]
-    #         res += val**2
+    #         res += val
     #
-    # # max_val = (255*3)**2*difference.width*difference.height
-    # res = 1.0 / (res + 1)
+    # max_val = (255*3)*difference.width*difference.height
+    # res = (max_val - res) / max_val
 
 
     # Calculate average brightness of differential image, this tells us how similar those images are
