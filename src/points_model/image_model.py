@@ -63,7 +63,7 @@ class ImageModel:
         if random.randint(0, 1) == 0:
             point.radius_percentage = self.mutation_range_function(0.4, 0.6, 0.1, point.radius_percentage)
         else:
-            point.R = int(self.mutation_range_function(0, self.color_range, self.color_range/2.0, point.R))
+            point.R = int(self.mutation_range_function(0, self.color_range, self.color_range/4.0, point.R))
             point.G = point.R
             point.B = point.R
             # point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))
