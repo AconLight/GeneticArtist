@@ -81,4 +81,4 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
         i = i + 1
 
 
-do_algorithm('mona', 0.35, 6, 0.9)
+do_algorithm('mona', 0.35, 2, 0.9)

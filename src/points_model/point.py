@@ -3,28 +3,22 @@ import random
 
 class Point:
 
-    def __init__(self, parents, father, radius_percentage, alfa):
+    def __init__(self, fathers, radius_percentage):
         self.children = []  # the children points - used to recalculate data
-        for parent in parents:
-            parent.children.append(self)
 
-        if father is not None:
-            self.layer = father.layer + 1
+        if len(fathers) != 0:
+            self.layer = fathers[0].layer + 1
         else:
             self.layer = 0
 
-        self.father = father
-        self.parents = parents  # the three points within which the point exists
+        self.fathers = fathers
         self.radius_percentage = radius_percentage  # the percentage of the possible radius of displacement of the
                                                     # point from the calculated center of its parents
-        self.alfa = alfa    # the angle of the radius of the displacement
         self.x = 0
         self.y = 0
         self.R = random.randint(0, 255)
-        self.G = self.R
-        self.B = self.R
-        # self.G = random.randint(0, 255)
-        # self.B = random.randint(0, 255)
+        self.G = random.randint(0, 255)
+        self.B = random.randint(0, 255)
         self.recalculate_me()
 
     def set_rgb(self, R, G, B):
@@ -40,21 +34,11 @@ class Point:
         self.B = B  # blue color of RGB system
 
     def recalculate_me(self):
-        # TODO calc x, y
-        if len(self.parents) == 0:
+        if len(self.fathers) == 0:
             return
-        # calculating distances to parents
-        d1 = np.sqrt((self.parents[0].x - self.x)*(self.parents[0].x - self.x) + (self.parents[0].y - self.y)*(self.parents[0].y - self.y))
-        d2 = np.sqrt((self.parents[1].x - self.x)*(self.parents[1].x - self.x) + (self.parents[1].y - self.y)*(self.parents[1].y - self.y))
-        d3 = np.sqrt((self.parents[2].x - self.x)*(self.parents[2].x - self.x) + (self.parents[2].y - self.y)*(self.parents[2].y - self.y))
-
-        # calculating max radius
-        radiuses = [d1, d2, d3]
-        max_radius = np.min(radiuses)/2
-
-        # calculating new x, y
-        self.x = (self.parents[0].x + self.parents[1].x + self.parents[2].x) / 3 + self.radius_percentage*max_radius*np.cos(self.alfa)
-        self.y = (self.parents[0].y + self.parents[1].y + self.parents[2].y) / 3 + self.radius_percentage*max_radius*np.sin(self.alfa)
+        # calculating new position
+        self.x = self.fathers[0].x * self.radius_percentage + self.fathers[1].x * (1 - self.radius_percentage)
+        self.y = self.fathers[0].y * self.radius_percentage + self.fathers[1].y * (1 - self.radius_percentage)
 
     def recalculate_me_and_descendants(self):
         self.recalculate_me()
