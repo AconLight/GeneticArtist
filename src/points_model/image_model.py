@@ -63,11 +63,22 @@ class ImageModel:
         if random.randint(0, 1) == 0:
             point.radius_percentage = self.mutation_range_function(0.4, 0.6, 0.1, point.radius_percentage)
         else:
-            point.R = int(self.mutation_range_function(0, self.color_range, self.color_range/4.0, point.R))
-            point.G = point.R
-            point.B = point.R
-            # point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))
-            # point.B = int(self.mutation_range_function(0, self.color_range, self.color_range, point.B))
+            point.mutations_numb += 1
+            factor = 0.5 / point.mutations_numb
+            avg_fac = 4
+            if len(point.fathers) != 0:
+                point.R = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
+                                                           (point.R + point.fathers[0].R*avg_fac + point.fathers[1].R*avg_fac) / (2*avg_fac+1)))
+                point.G = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
+                                                           (point.G + point.fathers[0].G*avg_fac + point.fathers[1].G*avg_fac) / (2*avg_fac+1)))
+                point.B = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
+                                                           (point.B + point.fathers[0].B*avg_fac + point.fathers[1].B*avg_fac) / (2*avg_fac+1)))
+                # point.G = point.R
+                # point.B = point.R
+            else:
+                point.R = int(self.mutation_range_function(0, self.color_range, self.color_range * factor, point.R))
+                point.G = int(self.mutation_range_function(0, self.color_range, self.color_range * factor, point.G))
+                point.B = int(self.mutation_range_function(0, self.color_range, self.color_range * factor, point.B))
 
         point.recalculate_me_and_descendants()
 

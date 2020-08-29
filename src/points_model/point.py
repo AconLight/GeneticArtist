@@ -5,12 +5,14 @@ class Point:
 
     def __init__(self, fathers, radius_percentage):
         self.children = []  # the children points - used to recalculate data
-
+        self.mutations_numb = 0
         if len(fathers) != 0:
             self.layer = fathers[0].layer + 1
             self.R = (fathers[0].R + fathers[1].R) / 2
             self.G = (fathers[0].G + fathers[1].G) / 2
             self.B = (fathers[0].B + fathers[1].B) / 2
+            for f in fathers:
+                f.children.append(self)
         else:
             self.layer = 0
             self.R = random.randint(0, 255)

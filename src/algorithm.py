@@ -23,7 +23,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
 
     image_model = ImageModel(example_mutation_prob_func, example_cross_prob_func, example_mutation_func)
 
-    for i in range(6):
+    for i in range(8):
         image_model.cross_model()
 
     fitness = 0
@@ -82,4 +82,4 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
         i = i + 1
 
 
-do_algorithm('mona', 0.35, 6, 0.98)
+do_algorithm('circle', 0.35, 6, 0.98)
