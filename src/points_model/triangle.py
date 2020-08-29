@@ -6,6 +6,9 @@ class Triangle:
     def __init__(self, points, parent):
         self.points = points
         self.parent = parent
+        self.layer = 0
+        if parent is not None:
+            self.layer = parent.layer + 1
 
     def create_children(self):
         point1 = Point([self.points[0], self.points[1]], 0.5)

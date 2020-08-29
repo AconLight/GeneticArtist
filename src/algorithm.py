@@ -23,7 +23,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
 
     image_model = ImageModel(example_mutation_prob_func, example_cross_prob_func, example_mutation_func)
 
-    for i in range(3):
+    for i in range(6):
         image_model.cross_model()
 
     fitness = 0
@@ -39,7 +39,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
             print('fitness: ' + str(fitness))
             print('fitness goal: ' + str(fitness_goal))
         if fitness > 0.5 + fitness_goal * images_to_compare_idx / (
-                img_number - 1) / 2 or i - last_i > 1500 / img_number:
+                img_number - 1) / 2 or i - last_i > 4500 / img_number:
             last_i = i
             images_to_compare_idx = images_to_compare_idx + 1
             t = image_model.get_triangles()
@@ -64,6 +64,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
             fitness = calculate_fitness(images_to_compare[images_to_compare_idx], new_i2)
             continue
 
+
         new_image_model = copy.deepcopy(image_model)
         new_image_model.mutate_model()
         new_i2 = convert_triangles_to_image(new_image_model.get_triangles(),
@@ -81,4 +82,4 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
         i = i + 1
 
 
-do_algorithm('mona', 0.35, 2, 0.9)
+do_algorithm('mona', 0.35, 4, 0.98)

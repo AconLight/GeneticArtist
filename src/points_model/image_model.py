@@ -61,12 +61,13 @@ class ImageModel:
 
     def mutate_one(self, point):
         if random.randint(0, 1) == 0:
-            pass
-            # point.radius_percentage = self.mutation_range_function(0, 1, 1, point.radius_percentage)*0.5
+            point.radius_percentage = self.mutation_range_function(0.4, 0.6, 0.1, point.radius_percentage)
         else:
-            point.R = int(self.mutation_range_function(0, self.color_range, self.color_range, point.R))
-            point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))
-            point.B = int(self.mutation_range_function(0, self.color_range, self.color_range, point.B))
+            point.R = int(self.mutation_range_function(0, self.color_range, self.color_range/2.0, point.R))
+            point.G = point.R
+            point.B = point.R
+            # point.G = int(self.mutation_range_function(0, self.color_range, self.color_range, point.G))
+            # point.B = int(self.mutation_range_function(0, self.color_range, self.color_range, point.B))
 
         point.recalculate_me_and_descendants()
 

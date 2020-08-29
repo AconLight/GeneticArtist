@@ -8,17 +8,22 @@ class Point:
 
         if len(fathers) != 0:
             self.layer = fathers[0].layer + 1
+            self.R = (fathers[0].R + fathers[1].R) / 2
+            self.G = (fathers[0].G + fathers[1].G) / 2
+            self.B = (fathers[0].B + fathers[1].B) / 2
         else:
             self.layer = 0
+            self.R = random.randint(0, 255)
+            self.G = self.R
+            self.B = self.R
+            # self.G = random.randint(0, 255)
+            # self.B = random.randint(0, 255)
 
         self.fathers = fathers
         self.radius_percentage = radius_percentage  # the percentage of the possible radius of displacement of the
                                                     # point from the calculated center of its parents
         self.x = 0
         self.y = 0
-        self.R = random.randint(0, 255)
-        self.G = random.randint(0, 255)
-        self.B = random.randint(0, 255)
         self.recalculate_me()
 
     def set_rgb(self, R, G, B):
