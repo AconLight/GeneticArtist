@@ -1,5 +1,5 @@
 from image_processing.helper_functions import save_image, read_image
-from fitness.fitness_calculations import calculate_fitness
+from fitness.fitness_calculations import calculate_fitness_mean_difference
 from points_model.image_model import ImageModel
 from genetics.cross_prob import example_cross_prob_func
 from genetics.mutation_prob import example_mutation_prob_func
@@ -43,7 +43,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
         new_image_model = copy.deepcopy(image_model)
         new_image_model.mutate_model()
         new_i2 = convert_triangles_to_image(new_image_model.get_triangles(), (width, height))
-        new_fitness = calculate_fitness(img, new_i2)
+        new_fitness = calculate_fitness_mean_difference(img, new_i2)
         if new_fitness > fitness:
             fitness = new_fitness
             image_model = new_image_model

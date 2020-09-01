@@ -1,37 +1,73 @@
 from PIL import ImageChops
 from PIL import ImageStat
+from PIL import ImageFilter
+from PIL import ImageEnhance
 
 
-def calculate_fitness(original_image, generated_image):
-    # Calculate difference between two images
-
+def calculate_fitness_mean_difference(original_image, generated_image):
     if original_image.width != generated_image.width:
-        print('dupa')
+        print('FITNESS ERROR! Images are different.')
 
+    # Calculate difference between two images
     difference = ImageChops.difference(original_image, generated_image)
-
-    # res = 0
-    # for x in range(difference.width):
-    #     for y in range(difference.height):
-    #         val = 0
-    #         val += difference.getpixel((x, y))[0]
-    #         val += difference.getpixel((x, y))[1]
-    #         val += difference.getpixel((x, y))[2]
-    #         res += val
-    #
-    # max_val = (255*3)*difference.width*difference.height
-    # res = (max_val - res) / max_val
-
 
     # Calculate average brightness of differential image, this tells us how similar those images are
     stats = ImageStat.Stat(difference)
-    average_brightness = (stats.mean[0] + stats.mean[1] + stats.mean[2])/3
+    average_brightness = (stats.mean[0] + stats.mean[1] + stats.mean[2]) / 3
 
-    # Calculate fitness value
-    fitness = (255 - average_brightness) / 255
+    # Return fitness value
+    return (255 - average_brightness) / 255
 
-    # Use squaring to emphasise small changes when images are very similar
-    # fitness = fitness ** 2
-    # print(res)
-    # return res
-    return fitness
+
+def calculate_fitness_rms_difference(original_image, generated_image):
+    if original_image.width != generated_image.width:
+        print('FITNESS ERROR! Images are different.')
+
+    # Calculate difference between two images
+    difference = ImageChops.difference(original_image, generated_image)
+
+    # Calculate average brightness of differential image, this tells us how similar those images are
+    stats = ImageStat.Stat(difference)
+    average_brightness = (stats.rms[0] + stats.rms[1] + stats.rms[2]) / 3
+
+    # Return fitness value
+    return (255 - average_brightness) / 255
+
+
+def calculate_fitness_blur_mean_difference(original_image, generated_image):
+    if original_image.width != generated_image.width:
+        print('FITNESS ERROR! Images are different.')
+
+    # Calculate difference between two images
+    original_image = ImageEnhance.Contrast(original_image).enhance(1.5)
+    generated_image = ImageEnhance.Contrast(generated_image).enhance(1.5)
+    difference = ImageChops.difference(original_image, generated_image)
+
+    # Blur image
+    difference = difference.filter(ImageFilter.BLUR())
+
+    # Calculate average brightness of differential image, this tells us how similar those images are
+    stats = ImageStat.Stat(difference)
+    average_brightness = (stats.rms[0] + stats.rms[1] + stats.rms[2]) / 3
+
+    # Return fitness value
+    return (255 - average_brightness) / 255
+
+
+def calculate_fitness_contrast_mean_difference(original_image, generated_image):
+    if original_image.width != generated_image.width:
+        print('FITNESS ERROR! Images are different.')
+
+    # Increase contrast of images
+    original_image = ImageEnhance.Contrast(original_image).enhance(1.5)
+    generated_image = ImageEnhance.Contrast(generated_image).enhance(1.5)
+
+    # Calculate difference between two images
+    difference = ImageChops.difference(original_image, generated_image)
+
+    # Calculate average brightness of differential image, this tells us how similar those images are
+    stats = ImageStat.Stat(difference)
+    average_brightness = (stats.rms[0] + stats.rms[1] + stats.rms[2]) / 3
+
+    # Return fitness value
+    return (255 - average_brightness) / 255

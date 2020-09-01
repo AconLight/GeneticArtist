@@ -3,8 +3,8 @@ from points_model.triangle import Triangle
 import numpy as np
 import random
 
-class ImageModel:
 
+class ImageModel:
     color_range = 255
 
     init_R = color_range
@@ -41,8 +41,9 @@ class ImageModel:
         for point in self.points:
             if probabilty_func(point):
                 result.append(point)
-        result = [random.choice(result)]
-        return result
+        if len(result) > 0:
+            return [random.choice(result)]
+        return []
 
     def find_triangles(self, probabilty_func):
         result = []
@@ -71,13 +72,16 @@ class ImageModel:
             if len(point.fathers) != 0:
                 if mode == 1:
                     point.R = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
-                                                           (point.R + point.fathers[0].R*avg_fac + point.fathers[1].R*avg_fac) / (2*avg_fac+1)))
+                                                               (point.R + point.fathers[0].R * avg_fac + point.fathers[
+                                                                   1].R * avg_fac) / (2 * avg_fac + 1)))
                 if mode == 2:
                     point.G = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
-                                                           (point.G + point.fathers[0].G*avg_fac + point.fathers[1].G*avg_fac) / (2*avg_fac+1)))
+                                                               (point.G + point.fathers[0].G * avg_fac + point.fathers[
+                                                                   1].G * avg_fac) / (2 * avg_fac + 1)))
                 if mode == 3:
                     point.B = int(self.mutation_range_function(0, self.color_range, self.color_range * factor,
-                                                           (point.B + point.fathers[0].B*avg_fac + point.fathers[1].B*avg_fac) / (2*avg_fac+1)))
+                                                               (point.B + point.fathers[0].B * avg_fac + point.fathers[
+                                                                   1].B * avg_fac) / (2 * avg_fac + 1)))
                 # point.G = point.R
                 # point.B = point.R
             else:
@@ -100,6 +104,7 @@ class ImageModel:
     def get_triangles(self):
         result = []
         for t in self.triangles:
-            result.append({'points': list(map(lambda point: (point.x, point.y), t.points)), 'colors': list(map(lambda point: (point.R, point.G, point.B), t.points))})
+            result.append({'points': list(map(lambda point: (point.x, point.y), t.points)),
+                           'colors': list(map(lambda point: (point.R, point.G, point.B), t.points))})
 
         return result

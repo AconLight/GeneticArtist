@@ -1,5 +1,5 @@
 from image_processing.helper_functions import save_image, read_image
-from fitness.fitness_calculations import calculate_fitness
+from fitness.fitness_calculations import calculate_fitness_mean_difference
 from points_model.image_model import ImageModel
 from genetics.cross_prob import example_cross_prob_func
 from genetics.mutation_prob import example_mutation_prob_func
@@ -78,7 +78,7 @@ while True:
         i2 = convert_triangles_to_image(t,
                                         (int(width / (2 ** (4 - best_i11idx))), int(height / (2 ** (4 - best_i11idx)))))
 
-        fitness = calculate_fitness(i11[best_i11idx], i2)
+        fitness = calculate_fitness_mean_difference(i11[best_i11idx], i2)
         print(fitness)
 
         save_image(i2, 'siema')
@@ -91,13 +91,13 @@ while True:
         new_i2 = convert_triangles_to_image(image_model.get_triangles(),
                                             (int(width / (2 ** (4 - i11idx))), int(height / (2 ** (4 - i11idx)))))
 
-        fitness = calculate_fitness(i11[i11idx], new_i2)
+        fitness = calculate_fitness_mean_difference(i11[i11idx], new_i2)
         continue
 
     new_image_model = copy.deepcopy(image_model)
     new_image_model.mutate_model()
     new_i2 = convert_triangles_to_image(new_image_model.get_triangles(), (int(width / (2**(4-i11idx))), int(height / (2**(4-i11idx)))))
-    new_fitness = calculate_fitness(i11[i11idx], new_i2)
+    new_fitness = calculate_fitness_mean_difference(i11[i11idx], new_i2)
     if new_fitness > fitness:
         #last_i = int((i + last_i*5)/6)
         best_i11idx = i11idx

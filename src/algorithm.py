@@ -1,5 +1,5 @@
 from image_processing.helper_functions import save_image, read_image
-from fitness.fitness_calculations import calculate_fitness
+from fitness.fitness_calculations import calculate_fitness_mean_difference
 from points_model.image_model import ImageModel
 from genetics.cross_prob import example_cross_prob_func
 from genetics.mutation_prob import example_mutation_prob_func
@@ -61,7 +61,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
                                                             (1 / scale_step) ** (
                                                                 img_number - 1 - images_to_compare_idx)))))
             print()
-            fitness = calculate_fitness(images_to_compare[images_to_compare_idx], new_i2)
+            fitness = calculate_fitness_mean_difference(images_to_compare[images_to_compare_idx], new_i2)
             continue
 
 
@@ -72,7 +72,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
                                             int(width / ((1 / scale_step) ** (img_number - 1 - images_to_compare_idx))),
                                             int(height / (
                                                         (1 / scale_step) ** (img_number - 1 - images_to_compare_idx)))))
-        new_fitness = calculate_fitness(images_to_compare[images_to_compare_idx], new_i2)
+        new_fitness = calculate_fitness_mean_difference(images_to_compare[images_to_compare_idx], new_i2)
         if new_fitness > fitness:
             # last_i = int((i + last_i*5)/6)
             best_images_to_compare_idx = images_to_compare_idx
