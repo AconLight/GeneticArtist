@@ -101,6 +101,13 @@ class ImageModel:
         for triangle in triangles_to_cross:
             self.add_triangle(triangle)
 
+    def cross_mutate_model(self):
+        triangles_to_cross = self.find_triangles(self.cross_probability_func)
+        for triangle in triangles_to_cross:
+            self.add_triangle(triangle)
+            for point in triangle.points:
+                self.mutate_one(point)
+
     def get_triangles(self):
         result = []
         for t in self.triangles:
