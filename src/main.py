@@ -2,7 +2,7 @@ from image_processing.helper_functions import save_image, read_image
 from fitness.fitness_calculations import calculate_fitness_mean_difference
 from points_model.image_model import ImageModel
 from genetics.cross_prob import example_cross_prob_func
-from genetics.mutation_prob import example_mutation_prob_func
+from genetics.mutation_prob import all_mutate
 from genetics.mutations import example_mutation_func
 from image_processing.resizing import generate_scaled_images, resize_image
 from image_processing.triangles_to_image import convert_triangles_to_image
@@ -42,7 +42,7 @@ i11 = [
 width = 143*4
 height = 188*4
 
-image_model = ImageModel(example_mutation_prob_func, example_cross_prob_func, example_mutation_func)
+image_model = ImageModel(all_mutate, example_cross_prob_func, example_mutation_func)
 
 print(str(2**0))
 
