@@ -1,5 +1,7 @@
+import random
+
 from image_processing.helper_functions import save_image, read_image
-from fitness.fitness_calculations import calculate_fitness_mean_difference
+from fitness.fitness_calculations import calculate_fitness_mean_difference, calculate_fitness_rms_difference
 from points_model.image_model import ImageModel
 from genetics.cross_prob import example_cross_prob_func
 from genetics.mutation_prob import all_mutate
@@ -16,7 +18,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
 
     image_model = ImageModel(all_mutate, example_cross_prob_func, example_mutation_func)
 
-    for i in range(8):
+    for i in range(2):
         image_model.cross_model()
 
     fitness = 0
@@ -41,9 +43,13 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
 
 
         new_image_model = copy.deepcopy(image_model)
-        new_image_model.mutate_model()
+        rand_numb = random.randint(0, 2 + int(1000 / (i+1)))
+        if rand_numb == 0:
+            new_image_model.cross_mutate_model()
+        else:
+            new_image_model.mutate_model()
         new_i2 = convert_triangles_to_image(new_image_model.get_triangles(), (width, height))
-        new_fitness = calculate_fitness_mean_difference(img, new_i2)
+        new_fitness = calculate_fitness_rms_difference(img, new_i2)
         if new_fitness > fitness:
             fitness = new_fitness
             image_model = new_image_model

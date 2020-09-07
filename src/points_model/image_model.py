@@ -53,6 +53,15 @@ class ImageModel:
                 result.append(triangle)
         return result
 
+    def find_one_triangle(self, probabilty_func):
+        result = []
+        for triangle in self.triangles:
+            if probabilty_func(triangle):
+                result.append(triangle)
+        if len(result) > 0:
+            return [random.choice(result)]
+        return []
+
     def add_triangle(self, triangle):
         new_triangles = triangle.create_children()
         self.triangles.remove(triangle)
@@ -101,6 +110,13 @@ class ImageModel:
         triangles_to_cross = self.find_triangles(self.cross_probability_func)
         for triangle in triangles_to_cross:
             self.add_triangle(triangle)
+
+    def cross_mutate_model(self):
+        triangles_to_cross = self.find_one_triangle(self.cross_probability_func)
+        for triangle in triangles_to_cross:
+            self.add_triangle(triangle)
+            for point in self.find_points_from_list(triangle.points, self.mutation_probability_func):
+                self.mutate_one(point)
 
     def get_triangles(self):
         result = []
