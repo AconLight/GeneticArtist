@@ -1,3 +1,6 @@
+import math
+
+from genetics.mutation_prob import all_mutate, some_mutate, one_mutate
 from points_model.point import Point
 from points_model.triangle import Triangle
 import numpy as np
@@ -36,23 +39,12 @@ class ImageModel:
 
         self.triangles = [t1, t2]
 
-    def find_points_from_list(self, points, probabilty_func):
-        result = []
-        for point in points:
-            if probabilty_func(point):
-                result.append(point)
-        if len(result) > 0:
-            return [random.choice(result)]
-        return []
-
-    def find_points(self, probabilty_func):
-        result = []
-        for point in self.points:
-            if probabilty_func(point):
-                result.append(point)
-        if len(result) > 0:
-            return [random.choice(result)]
-        return []
+    def find_points(self, probabilty_func, mutation_type=1):
+        if mutation_type == 1:
+            return all_mutate(self.points)
+        if mutation_type == 2:
+            return some_mutate(self.points)
+        return one_mutate(self.points)
 
     def find_triangles(self, probabilty_func):
         result = []
@@ -109,8 +101,8 @@ class ImageModel:
 
         point.recalculate_me_and_descendants()
 
-    def mutate_model(self):
-        points_to_mutate = self.find_points(self.mutation_probability_func)
+    def mutate_model(self, mutation_type=1):
+        points_to_mutate = self.find_points(self.mutation_probability_func, mutation_type)
         for point in points_to_mutate:
             self.mutate_one(point)
 
