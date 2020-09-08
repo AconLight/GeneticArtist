@@ -48,8 +48,11 @@ class ImageModel:
 
     def find_triangles(self, probabilty_func):
         result = []
+        min_layer = 9999
         for triangle in self.triangles:
-            if probabilty_func(triangle):
+            min_layer = min(min_layer, triangle.layer)
+        for triangle in self.triangles:
+            if probabilty_func(triangle, min_layer = min_layer):
                 result.append(triangle)
         return result
 
