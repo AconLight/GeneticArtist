@@ -3,7 +3,7 @@ from fitness.fitness_calculations import calculate_fitness_mean_difference
 from points_model.image_model import ImageModel
 from genetics.cross_prob import example_cross_prob_func, example_cross_prob_func2
 from genetics.mutation_prob import all_mutate
-from genetics.mutations import example_mutation_func
+from genetics.mutations import example_mutation_func, mirror_mutation_func
 from image_processing.resizing import generate_scaled_images, resize_image
 from image_processing.triangles_to_image import convert_triangles_to_image
 import copy
@@ -17,7 +17,7 @@ def do_algorithm(image_name, scale_step, img_number, fitness_goal):
     width = img.width
     height = img.height
 
-    image_model = ImageModel(all_mutate, example_cross_prob_func2, example_mutation_func)
+    image_model = ImageModel(all_mutate, example_cross_prob_func2, mirror_mutation_func)
 
     image_model.cross_model()
     tp = image_model.get_triangles()

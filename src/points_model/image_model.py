@@ -21,13 +21,13 @@ class ImageModel:
         self.mutation_range_function = mutation_range_function
 
         # definition of points on the corners of image
-        c1 = Point([], 0)
+        c1 = Point([], 0.5)
         c1.set_xyrgb(0, 0, self.init_R, self.init_G, self.init_B)
-        c2 = Point([], 0)
+        c2 = Point([], 0.5)
         c2.set_xyrgb(1, 0, self.init_R, self.init_G, self.init_B)
-        c3 = Point([], 0)
+        c3 = Point([], 0.5)
         c3.set_xyrgb(1, 1, self.init_R, self.init_G, self.init_B)
-        c4 = Point([], 0)
+        c4 = Point([], 0.5)
         c4.set_xyrgb(0, 1, self.init_R, self.init_G, self.init_B)
 
         self.points = [
@@ -101,8 +101,16 @@ class ImageModel:
                 point.R = int(self.mutation_range_function(0, self.color_range, self.color_range * factor, point.R))
                 point.G = int(self.mutation_range_function(0, self.color_range, self.color_range * factor, point.G))
                 point.B = int(self.mutation_range_function(0, self.color_range, self.color_range * factor, point.B))
-
         point.recalculate_me_and_descendants()
+        if point.R > 255 or point.R < 0 or point.G > 255 or point.G < 0 or point.B > 255 or point.B < 0:
+            asd = 1 / 0
+            print('dupa')
+
+        if point.radius_percentage > 0.6 or point.radius_percentage < 0.4:
+            sd = 1 / 0
+            print(mode)
+            print(point.radius_percentage)
+            print('dupa2')
 
     def mutate_model(self, mutation_type=1):
         points_to_mutate = self.find_points(self.mutation_probability_func, mutation_type)
